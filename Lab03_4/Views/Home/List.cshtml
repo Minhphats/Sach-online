@@ -1,0 +1,99 @@
+﻿@using Lab03_4.Models
+@using PagedList.Mvc;
+@model PagedList.PagedList<Lab03_4.Models.SACH>
+@helper Truncate(string s, int length)
+{if (s.Length < length)
+    {@s }
+else
+{ @s.Substring(0, length)<text>...</text>}}
+@{
+    ViewBag.Title = "List";
+    Layout = "~/Areas/Admin/Views/Shared/_LayoutAdmin.cshtml";
+}
+
+<h2 style="text-align:center;">QUẢN LÝ THÔNG TIN SÁCH</h2>
+
+<p>
+    @Html.ActionLink("Thêm mới", "Create")
+</p>
+<table class="table">
+    <tr>
+        <th style="text-align:center;width:140px">
+            
+            Tên Sách
+        </th>
+       
+        <th style="text-align:center;width:80px">
+            
+            Giá Bán
+        </th>
+        <th style="text-align:center;width:200px">
+            
+            Mô Tả
+        </th>
+        <th style="text-align:center;width:80px">
+            
+            @Html.DisplayNameFor(model => model.First().HinhMinhHoa)
+        </th>
+        <th style="text-align:center;width:100px">
+            Chủ Đề
+        </th>
+        <th style="text-align:center;width:100px">
+            Nhà Xuất Bản
+        </th>
+        <th style="text-align:center;width:100px">
+            Ngày Cập Nhật
+        </th>
+        <th style="text-align:center;width:80px">
+            Số Lượng Bán
+        </th>
+        
+        <th></th>
+    </tr>
+
+    @foreach (var item in Model)
+    {
+        <tr>
+            <td>
+                @Truncate(item.TenSach, 50)
+            </td>
+            
+            <td>
+                @Html.FormatValue(item.DonGia, "{0:#,##0}")
+            </td>
+            <td>
+                @Html.Raw(Truncate(item.MoTa, 70).ToString())
+            </td>
+            <td>
+                <img src="~/Images/Sach/@item.HinhMinhHoa" style="width:50px;" />
+
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.CHUDE.TenChuDe)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.NHAXUATBAN.TenNXB)
+            </td>
+            <td>
+                @Html.FormatValue(@item.NgayCapNhat, "{0:dd/MM/yyyy}")
+            </td>
+            <td style="text-align:center">
+                @Html.DisplayFor(modelItem => item.SoLuongBan)
+            </td>
+            
+            <td>
+                <a href="@Url.Action("Edit", new { id = item.MaSach })" class="btn btn-warning" role="button">Sửa</a>
+                <a href="@Url.Action("Details", new { id = item.MaSach })" class="btn btn-primary" role="button">Chi tiết</a>
+                <a href="@Url.Action("Delete", new { id = item.MaSach })" class="btn btn-danger" role="button">Xóa</a>
+            </td>
+        </tr>
+    }
+
+</table>
+Trang @(Model.PageCount < Model.PageNumber ? 0 : Model.PageNumber)/@Model.PageCount <div class ="MenuTrang">    @Html.PagedListPager(Model, page => Url.Action("List", new { page = page })) </div>
+<style>
+    .MenuTrang {
+        display: inline;
+        text-align: center;
+    }
+</style>

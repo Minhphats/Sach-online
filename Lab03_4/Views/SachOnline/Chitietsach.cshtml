@@ -1,0 +1,25 @@
+﻿@model Lab03_4.Models.SACH
+@{
+    ViewBag.Title = "Chitietsach";
+    Layout = "~/Views/Shared/_LayoutPage1.cshtml";
+}
+
+<div class="thumbnail">
+    <h4 class="tensach" style="color: red">@Model.TenSach</h4>
+    <img src="~/Sach/@Model.HinhMinhHoa" style="width: 300px; height:400px ">
+    <div class="motasach">
+        <p>@Html.Raw(Model.MoTa.ToString().Replace("/n", "</p><p>nbsp&nbsp&nbsp&nbsp&nbsp"))</p>
+    </div>
+    <div style="margin-right:20px;">
+        <p> Ngày cập nhật: @Html.FormatValue(@Model.NgayCapNhat, "{0:dd/MM/yyyy}")</p>
+        <p > Giá bán : <span>@Html.FormatValue(@Model.DonGia, "{0:#,##0,0}")VNĐ</span></p>
+        <p class="addtocart">
+            <a href="@Url.Action("ThemGioHang","GioHang",new { ms = Model.MaSach, url = Request.Url.ToString() })" class="btn btn-primary" role="button">
+                <span class="glyphicon glyphicon-shopping-cart" aria-hidden="true"></span>
+                Add To Cart
+            </a>
+
+        </p>
+    </div>
+</div>
+
